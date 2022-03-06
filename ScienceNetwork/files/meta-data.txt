@@ -1,0 +1,3 @@
+row all-citations  article index  betweenness  cluster  n-of-connections n-degree
+[1  10671          628     41     72548.742    0.056    1163             1.999     64]       ;;sample data
+
