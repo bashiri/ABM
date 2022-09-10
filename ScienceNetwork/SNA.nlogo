@@ -4,8 +4,6 @@ breed [Normal Normals]                    ;custom kinds or breeds of turtles
 
 globals[                                  ;Network properties - Macro Level Properties
 
-  h
-  T
   index
   temp-Matrix
   num-of-researchers
@@ -20,9 +18,7 @@ globals[                                  ;Network properties - Macro Level Prop
 
   currentYear
 
-  N-Sort
-
-  counter                                 ; this checks limitation of 100000
+  no-of-sorting-level
 
   total-Article                           ; these variables will apply in computational model of each properties
   total-IndexArticle
@@ -180,113 +176,14 @@ to Sort-Network
        set row row + 1
    ]
 
-   set N-Sort  N-Sort + 1
+   set no-of-sorting-level  no-of-sorting-level + 1
 
-   if N-Sort > Max-Sort [
+   if no-of-sorting-level > Max-Sorting-Level [
       stop
    ]
 
 end
 
-
-to Set-Ping
-
-  set index 0
-  if Select = "Articles" [
-      set articleStep 333
-      set connectionStep 828.4
-      set degreeStep 9
-      set betweennessStep 16765
-      set clusterStep 226.8
-
-      while [index < num-of-researchers] [
-         let N matrix:get temp-Matrix index 2                   ;article value in file/matrix
-         ask turtle index [
-           ifelse N * 30 / 100 > 3
-               [set Size 3 set color lime + N]
-           [set Size N * 30 / 100 set color lime + N]
-
-            set index index + 1
-         ]
-
-      ]
-
-  ]
-
-  if Select = "Betweenness" [
-       set articleStep 300
-       set connectionStep 800.4
-       set degreeStep 8.5
-       set betweennessStep 14765
-       set clusterStep 206.8
-
-       while [index < num-of-researchers] [
-          let N matrix:get temp-Matrix index 4                  ;betweenness value in file/matrix
-          ask turtle index [
-              ifelse N * 30 / 100 > 3
-                  [set Size 3 set color blue + N]
-              [set Size N * 30 / 100 set color lime + N]
-
-               set index index + 1
-          ]
-       ]
-  ]
-
-  if Select = "Cluster" [
-
-       set articleStep 253
-       set connectionStep 780.4
-       set degreeStep 8.7
-       set betweennessStep 13765
-       set clusterStep 200.8
-
-    while [index < num-of-researchers] [
-       let N matrix:get temp-Matrix index 5                    ;cluster value in file/matrix
-       ask turtle index [
-           ifelse N * 30 / 100 > 3 [set Size 3 set color red + N]
-               [set Size N * 30 / 100 set color lime + N]
-           set index index + 1
-       ]
-    ]
-  ]
-
-  if Select = "Degree" [
-
-       set articleStep 259
-       set connectionStep 728.4
-       set degreeStep 8
-       set betweennessStep 11765
-       set clusterStep 190.8
-
-    while [index < num-of-researchers] [
-       let N matrix:get temp-Matrix index 6                     ;n-of-connections value in file/matrix
-       ask turtle index [
-           ifelse N * 30 / 100 > 3 [set Size 3 set color red + N]
-               [set Size N * 30 / 100 set color lime + N]
-           set index index + 1
-       ]
-     ]
-  ]
-
-  if Select = "Conection" [
-
-       set articleStep 3
-       set connectionStep 8
-       set degreeStep 0.9
-       set betweennessStep 16
-       set clusterStep 2
-
-    while [index < num-of-researchers] [
-       let N matrix:get temp-Matrix index 7                     ;n-degree value in file/matrix
-       ask turtle index [
-           ifelse N * 30 / 100 > 3 [set Size 3 set color red + N]
-               [set Size N * 99 / 100 + 1 set color lime + N]
-           set index index + 1
-       ]
-     ]
-  ]
-
-end
 
 
 to Sorting
@@ -307,6 +204,116 @@ to Sorting
   ask turtles [ setxy (xcor - x-offset / 2) (ycor - y-offset / 2) ]
 
 end
+
+
+
+
+to Set-Ping
+
+  set index 0
+
+  if Select = "Articles" [                                      ;for articles basic color is lime
+      set articleStep 333
+      set connectionStep 828.4
+      set degreeStep 9
+      set betweennessStep 16765
+      set clusterStep 226.8
+
+      while [index < num-of-researchers] [
+         let N matrix:get temp-Matrix index 2                   ;article value in file/matrix
+         ask turtle index [
+           ifelse N * 30 / 100 > 3
+               [set Size 3 set color lime + N]
+           [set Size N * 30 / 100 set color lime + N]
+
+            set index index + 1
+         ]
+
+      ]
+
+  ]
+
+  if Select = "Betweenness" [                                   ;for betweenness basic color is blue
+       set articleStep 300
+       set connectionStep 800.4
+       set degreeStep 8.5
+       set betweennessStep 14765
+       set clusterStep 206.8
+
+       while [index < num-of-researchers] [
+          let N matrix:get temp-Matrix index 4                  ;betweenness value in file/matrix
+          ask turtle index [
+              ifelse N * 30 / 100 > 3
+                  [set Size 3 set color blue + N]
+              [set Size N * 30 / 100 set color lime + N]
+
+               set index index + 1
+          ]
+       ]
+  ]
+
+  if Select = "Cluster" [                                       ;for cluster basic color is red
+
+       set articleStep 253
+       set connectionStep 780.4
+       set degreeStep 8.7
+       set betweennessStep 13765
+       set clusterStep 200.8
+
+       while [index < num-of-researchers] [
+          let N matrix:get temp-Matrix index 5                  ;cluster value in file/matrix
+          ask turtle index [
+              ifelse N * 30 / 100 > 3
+                  [set Size 3 set color red + N]
+              [set Size N * 30 / 100 set color lime + N]
+
+               set index index + 1
+          ]
+       ]
+  ]
+
+  if Select = "Degree" [                                         ;for degree basic color is green
+
+       set articleStep 259
+       set connectionStep 728.4
+       set degreeStep 8
+       set betweennessStep 11765
+       set clusterStep 190.8
+
+       while [index < num-of-researchers] [
+          let N matrix:get temp-Matrix index 6                    ;n-of-connections value in file/matrix
+          ask turtle index [
+              ifelse N * 30 / 100 > 3
+                  [set Size 3 set color green + N]
+              [set Size N * 30 / 100 set color lime + N]
+
+              set index index + 1
+          ]
+       ]
+  ]
+
+  if Select = "Connection" [                                      ;for degree basic color is yellow
+
+       set articleStep 3
+       set connectionStep 8
+       set degreeStep 0.9
+       set betweennessStep 16
+       set clusterStep 2
+
+       while [index < num-of-researchers] [
+          let N matrix:get temp-Matrix index 7                     ;n-degree value in file/matrix
+          ask turtle index [
+              ifelse N * 30 / 100 > 3
+                  [set Size 3 set color yellow + N]
+              [set Size (N * 99 / 100) + 1 set color lime + N]
+
+              set index index + 1
+          ]
+      ]
+  ]
+
+end
+
 
 
 to-report find-partner
@@ -333,25 +340,20 @@ end
 
 to Go
 
-    set counter counter + 1
-    if  counter > 100000 [
+     Calculate
+     Plt
 
-        Calculate
-        Plt
+     set elapsed-time elapsed-time + 1
+     set currentYear currentYear + 1
+     set index 0
+     set indexArticle 0
+     set indexConnection 0
+     set indexDegree 0
+     set indexBetweenness 0
+     set indexCluster 0
 
-        set elapsed-time elapsed-time + 1
-        set currentYear currentYear + 1
-        set counter 0
-        set index 0
-        set indexArticle 0
-        set indexConnection 0
-        set indexDegree 0
-        set indexBetweenness 0
-        set indexCluster 0
-     ]
-
-     if currentYear = 1428 [if Export-File [ Fit ] Stop]
-     if elapsed-time = 30 [if Export-File  [ Fit ]     ]
+     if currentYear  = 1428 [if Export-File [ write-report-in-file ] Stop]
+     if elapsed-time = 30   [if Export-File [ write-report-in-file ] Stop]
 end
 
 
@@ -359,11 +361,12 @@ to Calculate
 
   while [indexArticle < random-in-range Max-Performance-Article articleStep] [
         let per random-in-range 0 (num-of-researchers - 1)                        ;local variable for performance change
+
         if  random  100 < Article-Range [
             ask turtle per [ set t-Article t-Article + 1
                              let N matrix:get temp-Matrix per 2
                              ask turtle per [
-                                 if t-Article * 30 / 100 > 3 [set color lime + t-Article]
+                                 if (t-Article * 30 / 100) > 3 [set color lime + t-Article]
                              ]
             ]
         ]
@@ -401,67 +404,54 @@ to Calculate
           set total-Degree total-Degree + random-in-range 0.5 (total-Degree / 10)
   ]
 
-   while [indexBetweenness < random-in-range Max-Performance-Betweenness betweennessStep] [
+  while [indexBetweenness < random-in-range Max-Performance-Betweenness betweennessStep] [
+         let per random-in-range 0 (num-of-researchers - 1)
 
-       let per random-in-range 0 (num-of-researchers - 1)
-
-       if random  100 < Betweenness-Range [
-
+         if random  100 < Betweenness-Range [
             ask turtle per [set t-Betweenness t-Betweenness + 1]
-       ]
-       set indexBetweenness indexBetweenness + 1
+         ]
+         set indexBetweenness indexBetweenness + 1
    ]
 
    if random  100 < Betweenness-Range [
-       set total-Betweenness total-Betweenness + random-in-range 0.5 (total-Betweenness / 10)
+           set total-Betweenness total-Betweenness + random-in-range 0.5 (total-Betweenness / 10)
    ]
 
+   while [indexCluster < random-in-range Max-Performance-Cluster clusterStep] [
+         let per random-in-range 0 (num-of-researchers - 1)
 
-    while [indexCluster < random-in-range Max-Performance-Cluster clusterStep] [
+         if random  100 < Cluster-Range [
+            ask turtle per [set t-Cluster t-Cluster + 1]
+         ]
+         set indexCluster indexCluster + 1
+   ]
 
-          let per random-in-range 0 (num-of-researchers - 1)
-
-          if random  100 < Cluster-Range [
-             ask turtle per [set t-Cluster t-Cluster + 1]
-          ]
-          set indexCluster indexCluster + 1
-     ]
-
-     if random  100 < Cluster-Range [
-        set total-Cluster total-Cluster + random-in-range 0.5 (total-Cluster / 10)
-     ]
+   if random  100 < Cluster-Range [
+           set total-Cluster total-Cluster + random-in-range 0.5 (total-Cluster / 10)
+   ]
 
 end
 
 
-to Fit
+to write-report-in-file
 
-   file-close-all
+   file-open "files/report.txt"
+   file-print(word "t-Article  t-Betweenness  t-Cluster  t-Connection  N-Degree")
 
-   let file user-new-file
-
-   if is-string? file [
-       if file-exists? file
-          [ file-delete file ]
-       file-open file
-    ]
-  report-in-file
-
-end
-
-to report-in-file
-
-  file-open "files/report.txt"
-  file-print(word "t-Article - t-Betweenness - t-Cluster - t-Connection - N-Degree")
-  set index 0
+   set index 0
 
   while [index < num-of-researchers] [
       ask turtle index [
-          file-print t-Article
-          file-print t-Betweenness
-          file-print t-Cluster
-          file-print t-Connection
-          file-print N-Degree
+          file-type t-Article
+          file-type(word " ")
+          file-type t-Betweenness
+          file-type(word " ")
+          file-type t-Cluster
+          file-type(word " ")
+          file-type t-Connection
+          file-type(word " ")
+          file-type N-Degree
+          file-print(word " ")
       ]
       set index index + 1
    ]
@@ -469,7 +459,6 @@ to report-in-file
   file-close-all
 
 end
-
 
 
 to Plt
@@ -529,9 +518,9 @@ to Plt
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-209
+193
 10
-763
+747
 565
 -1
 -1
@@ -596,7 +585,7 @@ CHOOSER
 382
 Select
 Select
-"Articles" "Betweenness" "Cluster" "Degree" "Conection"
+"Articles" "Betweenness" "Cluster" "Degree" "Connection"
 0
 
 INPUTBOX
@@ -622,9 +611,9 @@ Change-Color-In-Run
 -1000
 
 PLOT
-1031
+1004
 10
-1495
+1468
 228
 Articles Trend
 NIL
@@ -656,10 +645,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-784
-10
-889
-55
+755
+12
+860
+57
 Current Year
 currentYear
 17
@@ -671,8 +660,8 @@ SLIDER
 134
 182
 167
-Max-Sort
-Max-Sort
+Max-Sorting-Level
+Max-Sorting-Level
 0
 300
 300.0
@@ -699,10 +688,10 @@ NIL
 1
 
 SLIDER
-785
-166
-1020
-199
+756
+168
+991
+201
 Max-Performance-Article
 Max-Performance-Article
 100
@@ -714,25 +703,25 @@ NIL
 HORIZONTAL
 
 SLIDER
-789
-370
-1023
-403
+758
+372
+992
+405
 Connection-Range
 Connection-Range
 0
 100
-99.0
+100.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-786
-206
-1021
-239
+757
+208
+992
+241
 Max-Performance-Connection
 Max-Performance-Connection
 0
@@ -744,9 +733,9 @@ NIL
 HORIZONTAL
 
 PLOT
-1032
+1005
 238
-1495
+1468
 443
 Connection Trend
 NIL
@@ -763,10 +752,10 @@ PENS
 "Computational Model" 1.0 0 -5298144 true "" ""
 
 SLIDER
-787
-246
-1022
-279
+758
+248
+993
+281
 Max-Performance-Degree
 Max-Performance-Degree
 0
@@ -778,24 +767,24 @@ NIL
 HORIZONTAL
 
 SLIDER
-791
-491
-1022
-524
+758
+493
+989
+526
 Degree-Range
 Degree-Range
 0
 100
-97.0
+100.0
 1
 1
 NIL
 HORIZONTAL
 
 PLOT
-1033
+1006
 450
-1496
+1469
 656
 Degree Status
 NIL
@@ -812,10 +801,10 @@ PENS
 "Computational Model" 1.0 0 -5298144 true "" ""
 
 MONITOR
-785
-62
-890
-107
+756
+64
+861
+109
 Elapsed Time
 elapsed-time
 17
@@ -823,9 +812,9 @@ elapsed-time
 11
 
 PLOT
-1504
+1475
 10
-1969
+1940
 227
 Betweenness Status
 NIL
@@ -842,10 +831,10 @@ PENS
 "Computational Model" 1.0 0 -5298144 true "" ""
 
 PLOT
-1505
-238
-1968
-441
+1475
+239
+1938
+442
 Cluster Status
 NIL
 NIL
@@ -861,10 +850,10 @@ PENS
 "Computational Model" 1.0 1 -5298144 true "" ""
 
 SLIDER
-789
-287
-1024
-320
+758
+289
+993
+322
 Max-Performance-Betweenness
 Max-Performance-Betweenness
 0
@@ -876,55 +865,55 @@ NIL
 HORIZONTAL
 
 SLIDER
-790
-450
-1023
-483
+757
+452
+990
+485
 Betweenness-Range
 Betweenness-Range
 0
 100
-98.0
+100.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-789
-328
-1022
-361
+758
+330
+991
+363
 Max-Performance-Cluster
 Max-Performance-Cluster
 0
 226.8
-225.0
+226.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-790
-410
-1023
-443
+758
+412
+991
+445
 Cluster-Range
 Cluster-Range
 0
 100
-98.0
+100.0
 1
 1
 NIL
 HORIZONTAL
 
 MONITOR
-785
-114
-890
-159
+756
+116
+861
+161
 Number of Researchers
 num-of-researchers
 17
@@ -1284,7 +1273,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.1
+NetLogo 6.2.2
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
