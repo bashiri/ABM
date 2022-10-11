@@ -1,3 +1,5 @@
+
+
 extensions [matrix]                       ;The matrix extension adds a new matrix data structure to NetLogo. A matrix is a mutable 2-dimensional array containing only numbers.
 
 breed [Normal Normals]                    ;custom kinds or breeds of turtles
@@ -1292,3 +1294,5 @@ Line -7500403 true 150 150 210 180
 @#$#@#$#@
 0
 @#$#@#$#@
+             
+             
